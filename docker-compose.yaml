@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  docker-frontend:
+    build: ./docker-frontend
+    container_name: docker-frontend_container
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
+  api:
+    build: ./api
+    container_name: frontend_c1
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./api:/app

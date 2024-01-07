@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
   res.json([
     {
       id: 1,
-      title: 'Severance',
+      title: 'Severancedfsed',
     },
     {
       id: 2,

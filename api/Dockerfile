@@ -4,8 +4,21 @@
 # does not matter if we have latest or other version of node as it specific here
 FROM node:17-alpine
 
+# use nodemon instead of node
+RUN npm install -g nodemon 
+
 #Specify working DIR so that we dont have to worry about the directory later on  
 WORKDIR /app
+
+# For layer caching . Docker uses layers from cache if they are not changed for faster build
+#  if no dependency are changed then no need to npm i 
+COPY package.json .
+
+# At build time of image 
+# We install all our necessary dependencies at build time from package.json
+RUN npm install
+
+
 
 # copy all of our source code in this image
 # NOTE - docker has its own file directory that we can specify
@@ -14,22 +27,21 @@ WORKDIR /app
 #       -Since we have workdir in /app. we cann just keep '.' and it will keep our files in "./app"
 COPY . . 
 
-# At build time of image 
-# We install all our necessary dependencies at build time from package.json
-RUN npm install
 
 # Even if we have port as 4000 in app.ts port is handled in container as we are using it.
 EXPOSE 9000
 
 # Now run the code 
 # Cannot run code at build time . we need to run the code at runtime when the container begins to run 
-CMD ["node", "app.ts"]
+CMD ["npm", "run", "dev"]
 
 
 
 # CMD 
 # Build an image 
-    # docker build -t myapp .  # -t for tagname(myapp) and . is the DIR
+    # docker build -t myapp .  # -t for tagname(myapp) and "." is the DIR where our docker file is 
+    # --> Build image with versions
+        # docker build -t myapp:v1 .
 
 # view all images 
     # docker images
@@ -41,7 +53,7 @@ CMD ["node", "app.ts"]
     # detach in terminal (for not stucking in terminal)
         # docker run --name app_c -p 9000:9000 -d moviesjsontest
 
-# docker processes
+# docker processes (containers)
     # docker ps   --> gives all running processes
     # docker ps -a --> all processes
 
@@ -50,3 +62,9 @@ CMD ["node", "app.ts"]
 
 # rerun container 
     # docker start mociesjsontest_c
+
+# volume
+    # docker run --name myexpapp_c -p 4000:4000 --rm -v /home/sumanp/files/mcodes/docker-init:/app -v /node/modules myexpapp:latest
+        # --rm for deleting container when we stop it later on. this is for not storing container when we dont need it .
+        # -v for volumn so that in /app the dockerfile is mapped . while the nodemon watches the changes for files . this is for development and image doesnot change with this.
+            # The second -v is for node modules . 
