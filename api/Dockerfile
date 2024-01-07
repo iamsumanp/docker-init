@@ -68,3 +68,19 @@ CMD ["npm", "run", "dev"]
         # --rm for deleting container when we stop it later on. this is for not storing container when we dont need it .
         # -v for volumn so that in /app the dockerfile is mapped . while the nodemon watches the changes for files . this is for development and image doesnot change with this.
             # The second -v is for node modules . 
+
+# docker compose    
+# version: '3.8'
+# services:
+#   api:
+#     build: ./api
+#     container_name: frontend_c1
+#     ports:
+#       - '9000:9000'
+#     volumes:
+#       - ./api:/app
+#  -------> docker-compose up -> create isolated images for images 
+
+
+#stoping the docker compose containers
+    # docker-compose down  or docker-compose down --rmi all -v (rmi removes images and all removes all images. added -v deletes the volumes) 
