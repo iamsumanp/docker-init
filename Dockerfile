@@ -25,3 +25,28 @@ EXPOSE 9000
 # Cannot run code at build time . we need to run the code at runtime when the container begins to run 
 CMD ["node", "app.ts"]
 
+
+
+# CMD 
+# Build an image 
+    # docker build -t myapp .  # -t for tagname(myapp) and . is the DIR
+
+# view all images 
+    # docker images
+
+# run an image in a container 
+    # docker run --name moviesjsontest_c moviesjsontest  #name for container running image 
+    # Port is not accessible to the localhost as we need exposed port from container 
+        # docker run --name app_c -p 9000:9000 --> right one is container exposed port and left is the port we want to map in the computer
+    # detach in terminal (for not stucking in terminal)
+        # docker run --name app_c -p 9000:9000 -d moviesjsontest
+
+# docker processes
+    # docker ps   --> gives all running processes
+    # docker ps -a --> all processes
+
+# stop container 
+    #docker stop moviesjsontest_c
+
+# rerun container 
+    # docker start mociesjsontest_c
